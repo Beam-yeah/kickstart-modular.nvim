@@ -10,6 +10,13 @@ vim.opt.relativenumber = true
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
 
+--indents
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+vim.opt.smartindent = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
@@ -30,15 +37,21 @@ vim.opt.breakindent = true
 -- Save undo history
 vim.opt.undofile = true
 
+vim.opt.wrap = false
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.incsearch = true
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 50
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -62,5 +75,12 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+vim.opt.signcolumn = 'yes'
+vim.opt.isfname:append '@-@'
+-- Set both relative and absolute line nr
+vim.o.statuscolumn = '%s %l %r'
+
+vim.opt.termguicolors = true
+vim.opt.colorcolumn = '80'
 
 -- vim: ts=2 sts=2 sw=2 et

@@ -23,6 +23,13 @@ return {
           sidebars = 'transparent',
           float = 'transparent',
         },
+        on_highlights = function(hl)
+          hl.comment = { bg = '#000000', fg = '#cbd3d4' }
+          hl.perlComment = { bg = '#000000', fg = '#cbd3d4' }
+          hl.Comment = { bg = '#000000', fg = '#cbd3d4' }
+          hl.LineNrAbove = { fg = '#e8e4d8' }
+          hl.LineNrBelow = { fg = '#e1c8e3' }
+        end,
       }
     end,
   },
