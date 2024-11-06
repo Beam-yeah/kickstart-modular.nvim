@@ -78,7 +78,7 @@ vim.opt.scrolloff = 10
 vim.opt.signcolumn = 'yes'
 vim.opt.isfname:append '@-@'
 -- Set both relative and absolute line nr
-vim.o.statuscolumn = '%s %l %r'
+-- vim.o.statuscolumn = '%s %l %r'
 
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = '80'

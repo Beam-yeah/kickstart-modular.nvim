@@ -13,6 +13,7 @@ return {
   dependencies = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
+    'theHamsta/nvim-dap-virtual-text',
 
     -- Required dependency for nvim-dap-ui
     'nvim-neotest/nvim-nio',
@@ -29,17 +30,26 @@ return {
     local dapui = require 'dapui'
     return {
       -- Basic debugging keymaps, feel free to change to your liking!
-      { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
-      { '<F1>', dap.step_into, desc = 'Debug: Step Into' },
-      { '<F2>', dap.step_over, desc = 'Debug: Step Over' },
-      { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
-      { '<leader>b', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
+      { '<F1>', dap.continue, desc = 'Debug: Start/Continue' },
+      { '<F2>', dap.step_into, desc = 'Debug: Step Into' },
+      { '<F3>', dap.step_over, desc = 'Debug: Step Over' },
+      { '<F4>', dap.step_out, desc = 'Debug: Step Out' },
+      { '<F5>', dap.step_back, desc = 'Debug: Step Back' },
+      { '<F6>', dap.restart, desc = 'Debug: Restart' },
+      { '<leader>tb', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
+      { '<leader>tc', dap.run_to_cursor, desc = 'Debug: Run to cursor' },
       {
-        '<leader>B',
+        '<leader>tB',
         function()
           dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
         end,
         desc = 'Debug: Set Breakpoint',
+      },
+      {
+        '<leader>?',
+        function()
+          dapui.eval(nil, { enter = true })
+        end,
       },
       -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
       { '<F7>', dapui.toggle, desc = 'Debug: See last session result.' },
@@ -73,25 +83,33 @@ return {
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
-      icons = { expanded = 'v', collapsed = '>', current_frame = '*' },
+      icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
       controls = {
         icons = {
-          pause = '||',
+          pause = '↠',
           play = '▶',
-          step_into = '⏎',
-          step_over = '+',
-          step_out = 'b',
-          step_back = '-',
-          run_last = '▶▶',
-          terminate = '✗',
-          disconnect = '//',
+          step_into = '↲',
+          step_over = '↷',
+          step_out = '↛',
+          step_back = '↶',
+          run_last = '↺',
+          terminate = '■',
+          disconnect = '⌅',
         },
       },
     }
 
     -- Change breakpoint icons
-    -- vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
-    -- vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
+    vim.api.nvim_set_hl(0, 'blue', { fg = '#3d59a1' })
+    vim.api.nvim_set_hl(0, 'green', { fg = '#9ece6a' })
+    vim.api.nvim_set_hl(0, 'yellow', { fg = '#FFFF00' })
+    vim.api.nvim_set_hl(0, 'orange', { fg = '#f09000' })
+
+    vim.fn.sign_define('DapBreakpoint', { text = '•', texthl = 'blue', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapBreakpointCondition', { text = '•', texthl = 'blue', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapBreakpointRejected', { text = '•', texthl = 'orange', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapStopped', { text = '•', texthl = 'green', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapLogPoint', { text = '•', texthl = 'yellow', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
     -- local breakpoint_icons = vim.g.have_nerd_font
     --     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
     --   or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
@@ -112,6 +130,16 @@ return {
         -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
         detached = vim.fn.has 'win32' == 0,
       },
+    }
+
+    require('nvim-dap-virtual-text').setup {
+      enabled = true, -- enable this plugin (the default)
+      enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
+      highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+      highlight_new_as_changed = false, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+      show_stop_reason = true, -- show stop reason when stopped for exceptions
+      commented = false, -- prefix virtual text with comment string
+      only_first_definition = false,
     }
   end,
 }

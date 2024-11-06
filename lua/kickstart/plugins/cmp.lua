@@ -5,6 +5,7 @@ return {
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
+        'onsails/lspkind.nvim',
         'L3MON4D3/LuaSnip',
         build = (function()
           -- Build Step is needed for regex support in snippets.
@@ -39,7 +40,9 @@ return {
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
       luasnip.config.setup {}
+      lspkind.init {}
 
       cmp.setup {
         snippet = {
